@@ -8,24 +8,34 @@ def intro():
 
 
 def get_word_to_guess():
-    return random.choice(words)
+    return list(random.choice(words))
 
 
-def replace_with_hyphens(word):
-    hyphens_count = len(word) - 3
-    return word[0:3] + "-" * hyphens_count
+def show_guessed_letters(letter, word_to_guess, guessed):
+    for i in range(len(word_to_guess)):
+        if word_to_guess[i] == letter:
+            guessed[i] = letter
+
+    return guessed
 
 
-def game():
+def play_game():
     word_to_guess = get_word_to_guess()
-    word_to_show = replace_with_hyphens(word_to_guess)
-    print("Guess the word: " + word_to_show)
-    word = input()
-    if word == word_to_guess:
-        print("You survived!")
-    else:
-        print("You lost!")
+    guessed = ["-"] * len(word_to_guess)
+    attempts = 8
+    while attempts > 0:
+        print()
+        print("".join(guessed))
+        print("Input a letter:")
+        letter = input()
+        attempts -= 1
+        if letter in word_to_guess:
+            guessed = show_guessed_letters(letter, word_to_guess, guessed)
+        else:
+            print("That letter doesn't appear in the word.")
+
+    print("\nThanks for playing!")
 
 
 intro()
-game()
+play_game()
