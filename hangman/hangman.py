@@ -19,22 +19,38 @@ def show_guessed_letters(letter, word_to_guess, guessed):
     return guessed
 
 
+def evaluate_result(guessed):
+    if "-" in guessed:
+        print()
+        print("You lost!")
+    else:
+        print()
+        print("".join(guessed))
+        print("You guessed the word!")
+        print("You survived!")
+
+
 def play_game():
     word_to_guess = get_word_to_guess()
     guessed = ["-"] * len(word_to_guess)
-    attempts = 8
-    while attempts > 0:
+    allowed_mistakes = 8
+    while allowed_mistakes > 0:
         print()
         print("".join(guessed))
         print("Input a letter:")
         letter = input()
-        attempts -= 1
-        if letter in word_to_guess:
+        if letter in guessed:
+            print("No improvements.")
+            allowed_mistakes -= 1
+        elif letter in word_to_guess:
             guessed = show_guessed_letters(letter, word_to_guess, guessed)
+            if "-" not in guessed:
+                break
         else:
             print("That letter doesn't appear in the word.")
+            allowed_mistakes -= 1
 
-    print("\nThanks for playing!")
+    evaluate_result(guessed)
 
 
 intro()
